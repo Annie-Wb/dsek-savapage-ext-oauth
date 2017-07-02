@@ -1,0 +1,83 @@
+#
+# This file is part of the SavaPage project <https://www.savapage.org>.
+# Copyright (c) 2011-2017 Datraverse B.V.
+# Author: Rijk Ravestein.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# For more information, please contact Datraverse B.V. at this
+# address: info@datraverse.com
+#
+
+#=======================================================================
+#                  SavaPage OAuth Client Plug-in
+# 
+#                             Smartschool 
+#
+#=======================================================================
+#
+#           THIS FILE CONTAINS CONFIDENTIAL INFORMATION AND
+#              SHOULD ONLY BE ACCESSIBLE BY ADMINISTRATORS
+#
+#            DO NOT CHANGE THE PERMISSIONS SET ON THIS FILE
+#
+#=======================================================================
+
+#-----------------------------------------------------------------
+# Unique ID of this plug-in.
+#-----------------------------------------------------------------
+savapage.plugin.id=smartschool
+
+#-----------------------------------------------------------------
+# Descriptive name
+#-----------------------------------------------------------------
+savapage.plugin.name=Smartschool OAuth Client
+
+#-----------------------------------------------------------------
+# Plug-in class
+#-----------------------------------------------------------------
+savapage.plugin.class=org.savapage.ext.oauth.SmartschoolOAuthPlugin
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+#savapage.plugin.enable=false
+savapage.plugin.enable=true
+
+#-----------------------------------------------------------------
+# Is plug-in turned online when loaded? (true | false) 
+#
+# When the plug-in is turned offline, users are not able to   
+# authenticate, but Web API callbacks are handled. 
+#-----------------------------------------------------------------
+savapage.plugin.online=true
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+savapage.plugin.live=true
+
+#-----------------------------------------------------------------
+# API
+#-----------------------------------------------------------------
+smartschool.account=youraccount
+smartschool.oauth.client-id=xxxxxxxxxxxx
+smartschool.oauth.client-secret=xxxxxxxxxxxx
+
+#-----------------------------------------------------------------
+# Authorized redirect URL: must end with /user?sp-oauth=smartschool
+#-----------------------------------------------------------------
+smartschool.oauth.callback-url=https://savapage.example.com/user?sp-oauth=smartschool
+
+# end-of-file
