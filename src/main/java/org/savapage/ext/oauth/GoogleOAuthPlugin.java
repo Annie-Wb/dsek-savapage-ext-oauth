@@ -1,6 +1,6 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2017 Datraverse B.V.
+ * Copyright (c) 2011-2018 Datraverse B.V.
  * Author: Rijk Ravestein.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -192,14 +192,16 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
         final String secretState = String.format("%s%d",
                 this.getClass().getSimpleName(), new Random().nextInt(999_999));
 
-        this.oauthService = new ServiceBuilder()
-                .apiKey(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
-                .apiSecret(props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
-                .scope(OAUTH_SCOPE)
-                //
-                .state(secretState)
-                .callback(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
-                .build(GoogleApi20.instance());
+        this.oauthService =
+                new ServiceBuilder(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
+                        .apiSecret(
+                                props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
+                        .scope(OAUTH_SCOPE)
+                        //
+                        .state(secretState)
+                        .callback(
+                                props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
+                        .build(GoogleApi20.instance());
 
         /*
          * Prepare the authorization URL.
@@ -334,7 +336,7 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
                 String.format("%s%d", GoogleOAuthPlugin.class.getSimpleName(),
                         new Random().nextInt(999_999));
 
-        final OAuth20Service service = new ServiceBuilder().apiKey(clientId)
+        final OAuth20Service service = new ServiceBuilder(clientId)
                 .apiSecret(clientSecret).scope(OAUTH_SCOPE).state(secretState)
                 .callback(args[2]).build(GoogleApi20.instance());
 

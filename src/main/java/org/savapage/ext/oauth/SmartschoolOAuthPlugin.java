@@ -1,6 +1,6 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2017 Datraverse B.V.
+ * Copyright (c) 2011-2018 Datraverse B.V.
  * Author: Rijk Ravestein.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -166,16 +166,18 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
         final String secretState = String.format("%s%d",
                 this.getClass().getSimpleName(), new Random().nextInt(999_999));
 
-        this.oauthService = new ServiceBuilder()
-                .apiKey(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
-                .apiSecret(props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
-                .callback(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
-                .scope(SMARTSCHOOL_OAUTH_SCOPE)
-                //
-                .state(secretState)
-                //
-                .build(new SmartschoolOAuthApi(
-                        props.getProperty(PROP_KEY_ACCOUNT)));
+        this.oauthService =
+                new ServiceBuilder(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
+                        .apiSecret(
+                                props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
+                        .callback(
+                                props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
+                        .scope(SMARTSCHOOL_OAUTH_SCOPE)
+                        //
+                        .state(secretState)
+                        //
+                        .build(new SmartschoolOAuthApi(
+                                props.getProperty(PROP_KEY_ACCOUNT)));
 
         try {
             this.callbackUrl =
