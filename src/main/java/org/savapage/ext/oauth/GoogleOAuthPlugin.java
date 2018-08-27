@@ -32,6 +32,8 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.savapage.ext.ServerPluginContext;
+import org.savapage.ext.ServerPluginContext;
 import org.savapage.ext.ServerPluginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +185,8 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
 
     @Override
     public void onInit(final String pluginId, final String pluginName,
-            final boolean live, final boolean online, final Properties props)
+            final boolean live, final boolean online, final Properties props,
+            final ServerPluginContext context)
             throws ServerPluginException {
 
         this.id = pluginId;
