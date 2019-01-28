@@ -1,6 +1,6 @@
 #
 # This file is part of the SavaPage project <https://www.savapage.org>.
-# Copyright (c) 2011-2018 Datraverse B.V.
+# Copyright (c) 2011-2019 Datraverse B.V.
 # Author: Rijk Ravestein.
 #
 # This program is free software: you can redistribute it and/or modify
@@ -34,50 +34,67 @@
 #
 #=======================================================================
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # Unique ID of this plug-in.
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 savapage.plugin.id=smartschool-oauth
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # Descriptive name
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 savapage.plugin.name=Smartschool OAuth Client
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # Plug-in class
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 savapage.plugin.class=org.savapage.ext.oauth.SmartschoolOAuthPlugin
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # true | false
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 #savapage.plugin.enable=false
 savapage.plugin.enable=true
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # Is plug-in turned online when loaded? (true | false) 
 #
 # When the plug-in is turned offline, users are not able to   
 # authenticate, but Web API callbacks are handled. 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 savapage.plugin.online=true
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # true | false
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 savapage.plugin.live=true
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 # API
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
 smartschool.account=youraccount
 smartschool.oauth.client-id=xxxxxxxxxxxx
 smartschool.oauth.client-secret=xxxxxxxxxxxx
 
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
+# Optional ID to make multiple Smartschool OAuth instances unique.
+# The ID must contain 'a-z','A-Z','0-9', '-' and '_' characters only.
+# "youraccount" is an obvious choice, but any other string will do.
+#-------------------------------------------------------------------
+#smartschool.plugin.id=youraccount
+
+#-------------------------------------------------------------------
+# Optional custom icon path relative to "server/custom/web/" 
+# without leading '/'.
+#-------------------------------------------------------------------
+#smartschool.plugin.icon=com.example/smartschool.png
+
+#-------------------------------------------------------------------
 # Authorized redirect URL: must end with /user?sp-oauth=smartschool
-#-----------------------------------------------------------------
+#-------------------------------------------------------------------
+# When smartschool.plugin.id is specified, append URL with: 
+#   &sp-oauth-id=<smartschool.plugin.id>
+#-------------------------------------------------------------------
 smartschool.oauth.callback-url=https://savapage.example.com/user?sp-oauth=smartschool
+#smartschool.oauth.callback-url=https://savapage.example.com/user?sp-oauth=smartschool&sp-oauth-id=youraccount
 
 # end-of-file

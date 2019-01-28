@@ -1,6 +1,6 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2018 Datraverse B.V.
+ * Copyright (c) 2011-2019 Datraverse B.V.
  * Author: Rijk Ravestein.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,6 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.savapage.ext.ServerPluginContext;
 import org.savapage.ext.ServerPluginContext;
 import org.savapage.ext.ServerPluginException;
 import org.slf4j.Logger;
@@ -171,6 +170,16 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
     }
 
     @Override
+    public String getInstanceId() {
+        return null;
+    }
+
+    @Override
+    public String getCustomIconPath() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }
@@ -186,8 +195,7 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
     @Override
     public void onInit(final String pluginId, final String pluginName,
             final boolean live, final boolean online, final Properties props,
-            final ServerPluginContext context)
-            throws ServerPluginException {
+            final ServerPluginContext context) throws ServerPluginException {
 
         this.id = pluginId;
         this.name = pluginName;

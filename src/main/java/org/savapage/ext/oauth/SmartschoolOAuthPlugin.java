@@ -1,6 +1,6 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2018 Datraverse B.V.
+ * Copyright (c) 2011-2019 Datraverse B.V.
  * Author: Rijk Ravestein.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,9 +58,14 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
      */
     private static final String PROP_KEY_PFX = "smartschool.";
 
-    /**
-     * .
-     */
+    /** */
+    private static final String PROP_KEY_PLUGIN_ID = PROP_KEY_PFX + "plugin.id";
+
+    /** */
+    private static final String PROP_KEY_PLUGIN_ICON =
+            PROP_KEY_PFX + "plugin.icon";
+
+    /** */
     private static final String PROP_KEY_ACCOUNT = PROP_KEY_PFX + "account";
 
     /**
@@ -68,21 +73,15 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
      */
     private static final String PROP_KEY_OAUTH_PFX = PROP_KEY_PFX + "oauth.";
 
-    /**
-     * .
-     */
+    /** */
     private static final String PROP_KEY_OAUTH_CLIENT_ID =
             PROP_KEY_OAUTH_PFX + "client-id";
 
-    /**
-     *
-     */
+    /** */
     private static final String PROP_KEY_OAUTH_CLIENT_SECRET =
             PROP_KEY_OAUTH_PFX + "client-secret";
 
-    /**
-    *
-    */
+    /** */
     private static final String PROP_KEY_OAUTH_CALLBACK_URL =
             PROP_KEY_OAUTH_PFX + "callback-url";
 
@@ -91,14 +90,10 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
      */
     private static final String SMARTSCHOOL_OAUTH_SCOPE = "userinfo";
 
-    /**
-     *
-     */
+    /** */
     private static final String URL_PARM_CODE = "code";
 
-    /**
-    *
-    */
+    /** */
     private static final String PROTECTED_RESOURCE_URL =
             "https://oauth.smartschool.be/Api/V1";
 
@@ -138,6 +133,16 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
     }
 
     @Override
+    public String getInstanceId() {
+        return this.properties.getProperty(PROP_KEY_PLUGIN_ID);
+    }
+
+    @Override
+    public String getCustomIconPath() {
+        return this.properties.getProperty(PROP_KEY_PLUGIN_ICON);
+    }
+
+    @Override
     public String getId() {
         return this.id;
     }
@@ -158,8 +163,7 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
     @Override
     public void onInit(final String pluginId, final String pluginName,
             final boolean live, final boolean online, final Properties props,
-            final ServerPluginContext context)
-            throws ServerPluginException {
+            final ServerPluginContext context) throws ServerPluginException {
 
         this.id = pluginId;
         this.name = pluginName;
