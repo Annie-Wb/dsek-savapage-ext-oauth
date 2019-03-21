@@ -9,7 +9,7 @@ OAuth Client Plug-in for:
 ### License
 
 This module is part of the SavaPage project <https://www.savapage.org>,
-copyright (c) 2011-2018 Datraverse B.V. and licensed under the
+copyright (c) 2011-2019 Datraverse B.V. and licensed under the
 [GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl.html)
 version 3, or (at your option) any later version.
 
@@ -32,6 +32,8 @@ Copy plug-in property file(s) to server environment:
     $ sudo cp savapage-ext-oauth-google.properties /opt/savapage/server/ext
     $ sudo cp savapage-ext-oauth-smartschool.properties /opt/savapage/server/ext
 
+Multiple Smartschool instances are permitted. See the annotated configuration keys in the `savapage-ext-oauth-smartschool.properties.template` file.
+
 Set ownership and restrict permissions, since properties file contains confidential information:
     
     $ sudo chown savapage:savapage /opt/savapage/server/ext/savapage-ext-oauth-*.properties
@@ -40,5 +42,4 @@ Set ownership and restrict permissions, since properties file contains confident
 Edit `savapage-ext-oauth-*.properties` files to specify the necessary data.
        
 Restart SavaPage.
-
 
