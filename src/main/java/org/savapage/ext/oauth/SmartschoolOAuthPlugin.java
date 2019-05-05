@@ -178,9 +178,7 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
                                 props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
                         .callback(
                                 props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
-                        .scope(SMARTSCHOOL_OAUTH_SCOPE)
-                        //
-                        .state(secretState)
+                        .defaultScope(SMARTSCHOOL_OAUTH_SCOPE)
                         //
                         .build(new SmartschoolOAuthApi(
                                 props.getProperty(PROP_KEY_ACCOUNT)));
@@ -190,7 +188,9 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
                     new URL(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL));
 
             this.authorizationUrl =
-                    new URL(this.oauthService.getAuthorizationUrl());
+                    new URL(this.oauthService.createAuthorizationUrlBuilder()
+                            .state(secretState).build());
+
         } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
         }
@@ -249,7 +249,6 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
             /*
              * Ask for a protected resource.
              */
-
             final String apiUrl = String.format("%s/%s" + "?access_token=%s",
                     PROTECTED_RESOURCE_URL, SMARTSCHOOL_OAUTH_SCOPE,
                     accessToken);

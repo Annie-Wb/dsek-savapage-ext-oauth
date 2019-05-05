@@ -207,9 +207,8 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
                 new ServiceBuilder(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
                         .apiSecret(
                                 props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
-                        .scope(OAUTH_SCOPE)
+                        .defaultScope(OAUTH_SCOPE)
                         //
-                        .state(secretState)
                         .callback(
                                 props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
                         .build(GoogleApi20.instance());
@@ -230,12 +229,12 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
         }
 
         try {
-
             this.callbackUrl =
                     new URL(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL));
 
-            this.authorizationUrl = new URL(
-                    this.oauthService.getAuthorizationUrl(additionalParams));
+            this.authorizationUrl = new URL(this.oauthService
+                    .createAuthorizationUrlBuilder().state(secretState)
+                    .additionalParams(additionalParams).build());
 
         } catch (MalformedURLException e) {
             throw new IllegalStateException(e);
@@ -348,7 +347,7 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
                         new Random().nextInt(999_999));
 
         final OAuth20Service service = new ServiceBuilder(clientId)
-                .apiSecret(clientSecret).scope(OAUTH_SCOPE).state(secretState)
+                .apiSecret(clientSecret).defaultScope(OAUTH_SCOPE)
                 .callback(args[2]).build(GoogleApi20.instance());
 
         final Scanner in = new Scanner(System.in, "UTF-8");
@@ -374,8 +373,8 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
          */
         additionalParams.put("prompt", "consent");
 
-        final String authorizationUrl =
-                service.getAuthorizationUrl(additionalParams);
+        final String authorizationUrl = service.createAuthorizationUrlBuilder()
+                .state(secretState).additionalParams(additionalParams).build();
 
         System.out.println("Got the Authorization URL!");
         System.out.println("Now go and authorize ScribeJava here:");
