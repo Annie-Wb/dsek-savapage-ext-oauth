@@ -3,6 +3,7 @@
 OAuth Client Plug-in for:
   
 * [Google](https://www.google.com/)
+* [Microsoft Azure](https://login.microsoftonline.com/)
 * [Smartschool](https://www.smartschool.be)
 
  
@@ -30,6 +31,7 @@ Copy plug-in library to server environment:
 Copy plug-in property file(s) to server environment:
     
     $ sudo cp savapage-ext-oauth-google.properties /opt/savapage/server/ext
+    $ sudo cp savapage-ext-oauth-azure.properties /opt/savapage/server/ext
     $ sudo cp savapage-ext-oauth-smartschool.properties /opt/savapage/server/ext
 
 Multiple Smartschool instances are permitted. See the annotated configuration keys in the `savapage-ext-oauth-smartschool.properties.template` file.
@@ -42,4 +44,3 @@ Set ownership and restrict permissions, since properties file contains confident
 Edit `savapage-ext-oauth-*.properties` files to specify the necessary data.
        
 Restart SavaPage.
-
