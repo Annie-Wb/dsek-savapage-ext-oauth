@@ -34,6 +34,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.savapage.ext.ServerPluginContext;
 import org.savapage.ext.ServerPluginException;
@@ -105,11 +106,9 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
      */
     private static final String CALLBACK_URL_PARM_CODE = "code";
 
-    /**
-     *
-     */
+    /** */
     private static final String PROTECTED_RESOURCE_URL =
-            "https://www.googleapis.com/plus/v1/people/me";
+            "https://www.googleapis.com/oauth2/v3/userinfo";
 
     /** */
     private static final String NETWORK_NAME = "G+";
@@ -285,38 +284,47 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
 
             oauthService.signRequest(accessToken, request);
 
-            final Response response = oauthService.execute(request);
+            try (Response response = oauthService.execute(request)) {
 
-            if (!response.isSuccessful()) {
-                LOGGER.error("OAuthRequest response code {}: {} ",
-                        response.getCode(),
-                        StringUtils.defaultString(response.getMessage(), "?"));
-                return null;
+                if (!response.isSuccessful()) {
+                    LOGGER.error("OAuthRequest response code {}: {} ",
+                            response.getCode(), StringUtils
+                                    .defaultString(response.getMessage(), "?"));
+                    return null;
+                }
+                //
+                final String json = response.getBody();
+                LOGGER.trace(json);
+
+                final OAuthUserInfo userInfo = new OAuthUserInfo();
+
+                final GoogleOAuthPayloadV3 payload =
+                        GoogleOAuthPayloadV3.create(json);
+
+                if (BooleanUtils.isFalse(payload.getEmailVerified())) {
+                    LOGGER.warn("Email {} NOT verified", payload.getEmail());
+                    return null;
+                }
+                userInfo.setEmail(payload.getEmail());
+
+                if (userInfo.getEmail() == null) {
+                    LOGGER.error(String.format("No email found:\n%s", json));
+                    return null;
+                }
+
+                /*
+                 * Just to be sure...
+                 */
+                if (hostedDomain != null
+                        && !userInfo.getEmail().endsWith(hostedDomain)) {
+                    LOGGER.error(String.format(
+                            "User [%s] is not a member [%s] domain.",
+                            userInfo.getEmail(), hostedDomain));
+                    return null;
+                }
+
+                return userInfo;
             }
-            //
-            final String json = response.getBody();
-            LOGGER.trace(json);
-
-            final GoogleOAuthPayload payload = GoogleOAuthPayload.create(json);
-            final OAuthUserInfo userInfo = new OAuthUserInfo();
-            userInfo.setEmail(payload.getFirstEmail());
-
-            if (userInfo.getEmail() == null) {
-                LOGGER.error(String.format("No email found:\n%s", json));
-                return null;
-            }
-            /*
-             * Just to be sure...
-             */
-            if (hostedDomain != null
-                    && !userInfo.getEmail().endsWith(hostedDomain)) {
-                LOGGER.error(
-                        String.format("User [%s] is not a member [%s] domain.",
-                                userInfo.getEmail(), hostedDomain));
-                return null;
-            }
-
-            return userInfo;
 
         } catch (InterruptedException e) {
             LOGGER.warn(e.getMessage());
@@ -344,6 +352,12 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
      */
     public static void main(final String[] args)
             throws IOException, InterruptedException, ExecutionException {
+
+        if (args.length < 3) {
+            System.out.println(
+                    "Usage: program [clientId] [clientSecret] [callback url]");
+            return;
+        }
 
         final String clientId = args[0];
         final String clientSecret = args[1];
@@ -447,11 +461,12 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
 
             final OAuthRequest request = new OAuthRequest(Verb.GET, requestUrl);
             service.signRequest(accessToken, request);
-            final Response response = service.execute(request);
-            System.out.println();
-            System.out.println(response.getCode());
-            System.out.println(response.getBody());
 
+            System.out.println();
+            try (Response response = service.execute(request)) {
+                System.out.println(response.getCode());
+                System.out.println(response.getBody());
+            }
             System.out.println();
         }
     }

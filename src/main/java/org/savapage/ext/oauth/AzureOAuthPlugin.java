@@ -1,7 +1,10 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2019 Datraverse B.V.
+ * Copyright (c) 2011-2020 Datraverse B.V.
  * Author: Rijk Ravestein.
+ *
+ * SPDX-FileCopyrightText: 2011-2020 Datraverse B.V. <info@datraverse.com>
+ * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -266,31 +269,33 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
 
             oauthService.signRequest(accessToken, request);
 
-            final Response response = oauthService.execute(request);
+            try (Response response = oauthService.execute(request)) {
 
-            if (!response.isSuccessful()) {
-                LOGGER.error(String.format("Error %d", response.getCode()));
-                return null;
+                if (!response.isSuccessful()) {
+                    LOGGER.error(String.format("Error %d", response.getCode()));
+                    return null;
+                }
+
+                final String json = response.getBody();
+                final AzureOAuthPayload payload =
+                        AzureOAuthPayload.create(json);
+
+                final OAuthUserInfo userInfo = new OAuthUserInfo();
+                userInfo.setUserId(payload.getMailNickname());
+
+                if (userInfo.getUserId() == null) {
+                    LOGGER.error("No username found:\n{}", json);
+                    return null;
+                }
+
+                if (BooleanUtils.isNotTrue(payload.getAccountEnabled())) {
+                    LOGGER.error("User account [{}] disabled.",
+                            userInfo.getUserId());
+                    return null;
+                }
+
+                return userInfo;
             }
-
-            final String json = response.getBody();
-            final AzureOAuthPayload payload = AzureOAuthPayload.create(json);
-
-            final OAuthUserInfo userInfo = new OAuthUserInfo();
-            userInfo.setUserId(payload.getMailNickname());
-
-            if (userInfo.getUserId() == null) {
-                LOGGER.error("No username found:\n{}", json);
-                return null;
-            }
-
-            if (BooleanUtils.isNotTrue(payload.getAccountEnabled())) {
-                LOGGER.error("User account [{}] disabled.",
-                        userInfo.getUserId());
-                return null;
-            }
-
-            return userInfo;
 
         } catch (InterruptedException e) {
             LOGGER.warn(e.getMessage());
