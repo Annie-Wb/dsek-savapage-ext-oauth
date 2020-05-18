@@ -27,8 +27,11 @@ package org.savapage.ext.oauth;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.text.MessageFormat;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -41,6 +44,9 @@ import org.slf4j.LoggerFactory;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Response;
+import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
 /**
@@ -130,6 +136,11 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
      */
     private URL callbackUrl;
 
+    /**
+     * {0} = code
+     */
+    private String urlAccessTokenPattern;
+
     @Override
     public OAuthProviderEnum getProvider() {
         return OAuthProviderEnum.SMARTSCHOOL;
@@ -197,7 +208,26 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
                     new URL(this.oauthService.createAuthorizationUrlBuilder()
                             .state(secretState).build());
 
-        } catch (MalformedURLException e) {
+            /*
+             * On Samrtschool Support Desk instructions, this works. But is this
+             * all according to https://tools.ietf.org/html/rfc6749 ?
+             */
+            this.urlAccessTokenPattern = String.format("%s" //
+                    + "?code={0}" //
+                    + "&client_id=%s" //
+                    + "&client_secret=%s" //
+                    + "&grant_type=authorization_code" //
+                    + "&state=%s" //
+                    + "&redirect_uri=%s",
+                    this.oauthService.getApi().getAccessTokenEndpoint(),
+                    this.properties.getProperty(PROP_KEY_OAUTH_CLIENT_ID),
+                    this.properties.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET),
+                    secretState,
+                    URLEncoder
+                            .encode(props.getProperty(
+                                    PROP_KEY_OAUTH_CALLBACK_URL), "UTF-8")
+                            .replace("+", "%20"));
+        } catch (MalformedURLException | UnsupportedEncodingException e) {
             throw new IllegalStateException(e);
         }
     }
@@ -248,16 +278,28 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
             /*
              * Get the Access Token. Since this is just a quick peek at the
              * username, a refresh token is not relevant.
+             *
+             * Note: this.oauthService.getAccessToken(code) does NOT work.
+             * Smartschool OAuth is "special" and needs lower level code.
              */
-            final OAuth2AccessToken token = oauthService.getAccessToken(code);
-            final String accessToken = token.getAccessToken();
+            final String urlAccessToken =
+                    MessageFormat.format(this.urlAccessTokenPattern, code);
+
+            final OAuthRequest request =
+                    new OAuthRequest(Verb.POST, urlAccessToken);
+
+            final OAuth2AccessToken token;
+            try (Response rsp = this.oauthService.execute(request)) {
+                token = this.oauthService.getApi().getAccessTokenExtractor()
+                        .extract(rsp);
+            }
 
             /*
              * Ask for a protected resource.
              */
             final String apiUrl = String.format("%s/%s" + "?access_token=%s",
                     PROTECTED_RESOURCE_URL, SMARTSCHOOL_OAUTH_SCOPE,
-                    accessToken);
+                    token.getAccessToken());
             final String json = getContent(new URL(apiUrl));
 
             LOGGER.trace(json);
