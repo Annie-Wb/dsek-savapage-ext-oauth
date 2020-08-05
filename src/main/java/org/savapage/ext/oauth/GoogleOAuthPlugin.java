@@ -1,9 +1,9 @@
 /*
  * This file is part of the SavaPage project <https://www.savapage.org>.
- * Copyright (c) 2011-2020 Datraverse B.V.
+ * Copyright (c) 2020 Datraverse B.V.
  * Author: Rijk Ravestein.
  *
- * SPDX-FileCopyrightText: 2011-2020 Datraverse B.V. <info@datraverse.com>
+ * SPDX-FileCopyrightText: © 2020 Datraverse B.V. <info@datraverse.com>
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * This program is free software: you can redistribute it and/or modify
@@ -369,106 +369,112 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
                 .apiSecret(clientSecret).defaultScope(OAUTH_SCOPE)
                 .callback(args[2]).build(GoogleApi20.instance());
 
-        final Scanner in = new Scanner(System.in, "UTF-8");
+        try (Scanner in = new Scanner(System.in, "UTF-8")) {
 
-        System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
-        System.out.println();
-
-        /*
-         * Obtain the Authorization URL.
-         */
-        System.out.println("Fetching the Authorization URL...");
-
-        final Map<String, String> additionalParams = new HashMap<>();
-
-        /*
-         * pass access_type=offline to get refresh token
-         */
-        additionalParams.put("access_type", "offline");
-
-        /*
-         * Force to re-get refresh token (if users are asked not the first
-         * time).
-         */
-        additionalParams.put("prompt", "consent");
-
-        final String authorizationUrl = service.createAuthorizationUrlBuilder()
-                .state(secretState).additionalParams(additionalParams).build();
-
-        System.out.println("Got the Authorization URL!");
-        System.out.println("Now go and authorize ScribeJava here:");
-        System.out.println(authorizationUrl);
-        System.out.println("And paste the authorization code here");
-        System.out.print(">>");
-        final String code = in.nextLine();
-        System.out.println();
-
-        System.out.println("And paste the state from server here. "
-                + "We have set 'secretState'='" + secretState + "'.");
-        System.out.print(">>");
-
-        final String value = in.nextLine();
-
-        if (secretState.equals(value)) {
-            System.out.println("State value does match!");
-        } else {
-            System.out.println("Ooops, state value does not match!");
-            System.out.println("Expected = " + secretState);
-            System.out.println("Got      = " + value);
+            System.out.println("=== " + NETWORK_NAME + "'s OAuth Workflow ===");
             System.out.println();
-        }
 
-        /*
-         * Trade the Request Token and Verifier for the Access Token.
-         */
-        System.out.println("Trading the Request Token for an Access Token...");
-        OAuth2AccessToken accessToken = service.getAccessToken(code);
+            /*
+             * Obtain the Authorization URL.
+             */
+            System.out.println("Fetching the Authorization URL...");
 
-        System.out.println("Got the Access Token!");
-        System.out.println("(if your curious it looks like this: " + accessToken
-                + ", 'rawResponse'='" + accessToken.getRawResponse() + "')");
+            final Map<String, String> additionalParams = new HashMap<>();
 
-        System.out.println("Refreshing the Access Token...");
+            /*
+             * pass access_type=offline to get refresh token
+             */
+            additionalParams.put("access_type", "offline");
 
-        accessToken = service.refreshAccessToken(accessToken.getRefreshToken());
+            /*
+             * Force to re-get refresh token (if users are asked not the first
+             * time).
+             */
+            additionalParams.put("prompt", "consent");
 
-        System.out.println("Refreshed the Access Token!");
-        System.out.println("(if your curious it looks like this: " + accessToken
-                + ", 'rawResponse'='" + accessToken.getRawResponse() + "')");
-        System.out.println();
+            final String authorizationUrl =
+                    service.createAuthorizationUrlBuilder().state(secretState)
+                            .additionalParams(additionalParams).build();
 
-        /*
-         * Now let's go and ask for a protected resource!
-         */
-        System.out.println("Now we're going to access a protected resource...");
-
-        while (true) {
-            System.out.println(
-                    "Paste fieldnames to fetch (leave empty to get profile, "
-                            + "'exit' to stop example)");
+            System.out.println("Got the Authorization URL!");
+            System.out.println("Now go and authorize ScribeJava here:");
+            System.out.println(authorizationUrl);
+            System.out.println("And paste the authorization code here");
             System.out.print(">>");
-            final String query = in.nextLine();
+            final String code = in.nextLine();
             System.out.println();
 
-            final String requestUrl;
-            if ("exit".equals(query)) {
-                break;
-            } else if (query == null || query.isEmpty()) {
-                requestUrl = PROTECTED_RESOURCE_URL;
+            System.out.println("And paste the state from server here. "
+                    + "We have set 'secretState'='" + secretState + "'.");
+            System.out.print(">>");
+
+            final String value = in.nextLine();
+
+            if (secretState.equals(value)) {
+                System.out.println("State value does match!");
             } else {
-                requestUrl = PROTECTED_RESOURCE_URL + "?fields=" + query;
+                System.out.println("Ooops, state value does not match!");
+                System.out.println("Expected = " + secretState);
+                System.out.println("Got      = " + value);
+                System.out.println();
             }
 
-            final OAuthRequest request = new OAuthRequest(Verb.GET, requestUrl);
-            service.signRequest(accessToken, request);
+            /*
+             * Trade the Request Token and Verifier for the Access Token.
+             */
+            System.out.println(
+                    "Trading the Request Token for an Access Token...");
+            OAuth2AccessToken accessToken = service.getAccessToken(code);
 
+            System.out.println("Got the Access Token!");
+            System.out.println("(if your curious it looks like this: "
+                    + accessToken + ", 'rawResponse'='"
+                    + accessToken.getRawResponse() + "')");
+
+            System.out.println("Refreshing the Access Token...");
+
+            accessToken =
+                    service.refreshAccessToken(accessToken.getRefreshToken());
+
+            System.out.println("Refreshed the Access Token!");
+            System.out.println("(if your curious it looks like this: "
+                    + accessToken + ", 'rawResponse'='"
+                    + accessToken.getRawResponse() + "')");
             System.out.println();
-            try (Response response = service.execute(request)) {
-                System.out.println(response.getCode());
-                System.out.println(response.getBody());
+
+            /*
+             * Now let's go and ask for a protected resource!
+             */
+            System.out.println(
+                    "Now we're going to access a protected resource...");
+
+            while (true) {
+                System.out.println("Paste fieldnames to fetch (leave empty "
+                        + "to get profile, 'exit' to stop example)");
+                System.out.print(">>");
+                final String query = in.nextLine();
+                System.out.println();
+
+                final String requestUrl;
+                if ("exit".equals(query)) {
+                    break;
+                } else if (query == null || query.isEmpty()) {
+                    requestUrl = PROTECTED_RESOURCE_URL;
+                } else {
+                    requestUrl = PROTECTED_RESOURCE_URL + "?fields=" + query;
+                }
+
+                final OAuthRequest request =
+                        new OAuthRequest(Verb.GET, requestUrl);
+                service.signRequest(accessToken, request);
+
+                System.out.println();
+                try (Response response = service.execute(request)) {
+                    System.out.println(response.getCode());
+                    System.out.println(response.getBody());
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
-
 }
