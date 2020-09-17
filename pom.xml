@@ -1,4 +1,4 @@
-<!-- SPDX-FileCopyrightText: 2011-2020 Datraverse BV <info@datraverse.com> -->
+<!-- SPDX-FileCopyrightText: © 2020 Datraverse BV <info@datraverse.com> -->
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.savapage</groupId>
     <artifactId>savapage-ext-oauth</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <name>SavaPage OAuth Client Library.</name>
     <description>SavaPage is a Free Software Solution that uses Open Standards and Commodity Hardware for Secure Pull-Printing, Pay-Per-Print, Delegated Print, Job Ticketing, Auditing and PDF Creation.</description>
     <properties>
@@ -76,12 +76,12 @@
         <dependency>
             <groupId>org.savapage</groupId>
             <artifactId>savapage-core</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.savapage</groupId>
             <artifactId>savapage-ext</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.0</version>
         </dependency>
     </dependencies>
     <url>https://www.savapage.org</url>
