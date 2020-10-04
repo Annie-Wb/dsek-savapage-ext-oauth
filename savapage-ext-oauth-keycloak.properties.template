@@ -1,0 +1,96 @@
+#
+# This file is part of the SavaPage project <https://www.savapage.org>.
+# Copyright (c) 2020 Datraverse B.V.
+# Author: Rijk Ravestein.
+#
+# SPDX-FileCopyrightText: © 2020 Datraverse B.V. <info@datraverse.com>
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# For more information, please contact Datraverse B.V. at this
+# address: info@datraverse.com
+#
+
+#=======================================================================
+#                  SavaPage OAuth Client Plug-in
+# 
+#                             Keycloak 
+# 
+#                    https://www.keycloak.org
+#
+#=======================================================================
+#
+#           THIS FILE CONTAINS CONFIDENTIAL INFORMATION AND
+#              SHOULD ONLY BE ACCESSIBLE BY ADMINISTRATORS
+#
+#            DO NOT CHANGE THE PERMISSIONS SET ON THIS FILE
+#
+#=======================================================================
+
+#-----------------------------------------------------------------
+# Unique ID of this plug-in.
+#-----------------------------------------------------------------
+savapage.plugin.id=keycloak-oauth
+
+#-----------------------------------------------------------------
+# Descriptive name
+#-----------------------------------------------------------------
+savapage.plugin.name=Keycloak OAuth
+
+#-----------------------------------------------------------------
+# Plug-in class
+#-----------------------------------------------------------------
+savapage.plugin.class=org.savapage.ext.oauth.KeycloakOAuthPlugin
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+#savapage.plugin.enable=false
+savapage.plugin.enable=true
+
+#-----------------------------------------------------------------
+# Is plug-in turned online when loaded? (true | false) 
+#
+# When the plug-in is turned offline, users are not able to   
+# authenticate, but Web API callbacks are handled. 
+#-----------------------------------------------------------------
+savapage.plugin.online=true
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+savapage.plugin.live=true
+
+#-------------------------------------------------------------------
+# Optional custom icon path relative to "server/custom/web/" 
+# without leading '/'.
+#-------------------------------------------------------------------
+#keycloak.plugin.icon=my_keycloak.png
+
+#-----------------------------------------------------------------
+# OAuth 2.0 client id and secret, baseURL and realm.
+#-----------------------------------------------------------------
+keycloak.oauth.client-id=your_client_id
+keycloak.oauth.client-secret=your_client_secret
+keycloak.oauth.base-url=your_base_url
+keycloak.oauth.realm=your_realm
+
+#-----------------------------------------------------------------
+# Authorized redirect URL: must end with /user?sp-oauth=keycloak
+#-----------------------------------------------------------------
+keycloak.oauth.callback-url=https://savapage.example.com/user?sp-oauth=keycloak
+
+
+# end-of-file

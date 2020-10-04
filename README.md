@@ -1,21 +1,22 @@
 <!-- 
-    SPDX-FileCopyrightText: 2011-2020 Datraverse BV <info@datraverse.com> 
+    SPDX-FileCopyrightText: (c) 2020 Datraverse BV <info@datraverse.com> 
     SPDX-License-Identifier: AGPL-3.0-or-later 
 -->
 
 # savapage-ext-oauth
-    
+
 OAuth Client Plug-in for:
-  
+
+* [Keycloak](https://www.keycloak.org/)
 * [Google](https://www.google.com/)
 * [Microsoft Azure](https://login.microsoftonline.com/)
 * [Smartschool](https://www.smartschool.be)
 
- 
+
 ### License
 
 This module is part of the SavaPage project <https://www.savapage.org>,
-copyright (c) 2011-2020 Datraverse B.V. and licensed under the
+copyright (c) 2020 Datraverse B.V. and licensed under the
 [GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl.html)
 version 3, or (at your option) any later version.
 
@@ -35,8 +36,9 @@ Copy plug-in library to server environment:
 
     $ sudo target/savapage-ext-oauth.jar /opt/savapage/server/ext/lib
     
-Copy plug-in property file(s) to server environment:
+Copy plug-in property file(s) to the server environment. Annotated `.template` files are present in the root directory of this repository.
     
+    $ sudo cp savapage-ext-oauth-keycloak.properties /opt/savapage/server/ext
     $ sudo cp savapage-ext-oauth-google.properties /opt/savapage/server/ext
     $ sudo cp savapage-ext-oauth-azure.properties /opt/savapage/server/ext
     $ sudo cp savapage-ext-oauth-smartschool.properties /opt/savapage/server/ext
