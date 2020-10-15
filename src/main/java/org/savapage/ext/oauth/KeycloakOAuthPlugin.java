@@ -176,23 +176,42 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
             final boolean live, final boolean online, final Properties props,
             final ServerPluginContext context) throws ServerPluginException {
 
+        final String oauthBasePropValue =
+                props.getProperty(PROP_KEY_OAUTH_BASE_URL);
+
+        if (oauthBasePropValue == null) {
+            throw new ServerPluginException(String.format("[%s] not specified.",
+                    PROP_KEY_OAUTH_BASE_URL));
+        }
+
         this.id = pluginId;
         this.name = pluginName;
 
         this.customIconPath = props.getProperty(PROP_KEY_PLUGIN_ICON);
 
-        this.oauthService =
-                new ServiceBuilder(props.getProperty(PROP_KEY_OAUTH_CLIENT_ID))
-                        .apiSecret(
-                                props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
-                        .defaultScope(OAUTH_SCOPE) //
-                        .callback(
-                                props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
-                        .build(KeycloakApi.instance(
-                                props.getProperty(PROP_KEY_OAUTH_BASE_URL),
-                                props.getProperty(PROP_KEY_OAUTH_REALM)));
-
         try {
+            // Validate URL by provoking MalformedURLException.
+            final URL oauthBaseURL = new URL(oauthBasePropValue);
+
+            /*
+             * A valid URL path with (typo) '//' at the end (or middle?) is
+             * reported NOT to work.
+             */
+            if (oauthBaseURL.getPath().contains("//")) {
+                throw new ServerPluginException(
+                        String.format("[%s] [%s] path contains \"//\".",
+                                PROP_KEY_OAUTH_BASE_URL, oauthBasePropValue));
+            }
+
+            this.oauthService = new ServiceBuilder(
+                    props.getProperty(PROP_KEY_OAUTH_CLIENT_ID)).apiSecret(
+                            props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
+                            .defaultScope(OAUTH_SCOPE) //
+                            .callback(props
+                                    .getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
+                            .build(KeycloakApi.instance(oauthBasePropValue,
+                                    props.getProperty(PROP_KEY_OAUTH_REALM)));
+
             this.callbackUrl =
                     new URL(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL));
 
@@ -201,13 +220,12 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
 
             this.protectedResourceUrl =
                     new URL(String.format(PROTECTED_RESOURCE_URL_FORMAT,
-                            props.getProperty(PROP_KEY_OAUTH_BASE_URL),
+                            oauthBasePropValue,
                             props.getProperty(PROP_KEY_OAUTH_REALM)));
 
         } catch (MalformedURLException e) {
-            throw new IllegalStateException(e);
+            throw new ServerPluginException(e.getMessage());
         }
-
     }
 
     @Override
