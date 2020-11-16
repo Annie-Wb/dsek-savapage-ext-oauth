@@ -477,4 +477,9 @@ public final class GoogleOAuthPlugin implements OAuthClientPlugin {
             }
         }
     }
+
+    @Override
+    public boolean isUserSource() {
+        return false;
+    }
 }

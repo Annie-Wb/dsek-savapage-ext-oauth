@@ -326,4 +326,9 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
         return null;
     }
 
+    @Override
+    public boolean isUserSource() {
+        return false;
+    }
+
 }

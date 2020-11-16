@@ -74,6 +74,19 @@ savapage.plugin.online=true
 savapage.plugin.live=true
 
 #-------------------------------------------------------------------
+# true | false (default)
+#
+# If "true", the OAuth provided User ID is part of SavaPage 
+# external user source (OpenLDAP).
+#
+# This value is used to decide if an enabled "On demand user creation"
+# "At first login" must be applied. If so, if a user is not present in 
+# SavaPage after a successful OAuth login, the user is ad hoc created
+# in anticipation of the next user sync.
+#-------------------------------------------------------------------
+#keycloak.savapage.usersource=true
+
+#-------------------------------------------------------------------
 # Optional custom icon path relative to "server/custom/web/" 
 # without leading '/'.
 #-------------------------------------------------------------------

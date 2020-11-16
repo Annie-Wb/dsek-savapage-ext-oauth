@@ -67,6 +67,10 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     private static final String PROP_KEY_PLUGIN_ICON =
             PROP_KEY_PFX + "plugin.icon";
 
+    /** */
+    private static final String PROP_KEY_PLUGIN_USER_SOURCE =
+            PROP_KEY_PFX + "savapage.usersource";
+
     /**
      * OAuth property key prefix.
      */
@@ -134,6 +138,12 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     private String customIconPath;
 
     /**
+     * If {@code true}, the OAuth provided User ID is part of SavaPage external
+     * user source.
+     */
+    private boolean userSource;
+
+    /**
      * The singleton {@link OAuth20Service}.
      */
     private OAuth20Service oauthService;
@@ -188,6 +198,9 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
         this.name = pluginName;
 
         this.customIconPath = props.getProperty(PROP_KEY_PLUGIN_ICON);
+
+        this.userSource = Boolean.parseBoolean(props.getProperty(
+                PROP_KEY_PLUGIN_USER_SOURCE, Boolean.toString(false)));
 
         try {
             // Validate URL by provoking MalformedURLException.
@@ -312,4 +325,8 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
         return null;
     }
 
+    @Override
+    public boolean isUserSource() {
+        return this.userSource;
+    }
 }

@@ -380,4 +380,10 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
         in.close();
     }
 
+    @Override
+    public boolean isUserSource() {
+        // not supported for now.
+        return false;
+    }
+
 }
