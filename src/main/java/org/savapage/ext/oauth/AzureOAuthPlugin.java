@@ -74,6 +74,10 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
      */
     private static final String PROP_KEY_PFX = "azure.";
 
+    /** */
+    private static final String PROP_KEY_PLUGIN_USER_SOURCE =
+            PROP_KEY_PFX + "savapage.usersource";
+
     /**
      * OAuth property key prefix.
      */
@@ -132,6 +136,12 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
     private ApiVersionEnum apiVersion;
 
     /**
+     * If {@code true}, the OAuth provided User ID is part of SavaPage external
+     * user source.
+     */
+    private boolean userSource;
+
+    /**
      * The singleton {@link OAuth20Service}.
      */
     private OAuth20Service oauthService;
@@ -186,6 +196,9 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
 
         this.id = pluginId;
         this.name = pluginName;
+
+        this.userSource = Boolean.parseBoolean(props.getProperty(
+                PROP_KEY_PLUGIN_USER_SOURCE, Boolean.toString(false)));
 
         final BaseMicrosoftAzureActiveDirectoryApi baseApi;
 
@@ -382,8 +395,7 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
 
     @Override
     public boolean isUserSource() {
-        // not supported for now.
-        return false;
+        return this.userSource;
     }
 
 }
