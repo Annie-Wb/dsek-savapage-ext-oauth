@@ -76,7 +76,7 @@ savapage.plugin.live=true
 # true | false (default)
 #
 # If "true", the OAuth provided User ID is part of SavaPage 
-# external user source (OpenLDAP).
+# external user source.
 #
 # This value is used to decide if an enabled "On demand user creation"
 # "At first login" must be applied. If so, if a user is not present in 
