@@ -102,6 +102,7 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
     /** */
     private static final String PROP_KEY_OAUTH_V16 = "1";
     /** */
+    @SuppressWarnings("unused")
     private static final String PROP_KEY_OAUTH_V20 = "2";
 
     /**
