@@ -100,10 +100,16 @@ keycloak.oauth.client-secret=your_client_secret
 keycloak.oauth.base-url=your_base_url
 keycloak.oauth.realm=your_realm
 
+#----------------------------------------
+# realm path: 'auth/realms' (default) or 
+# 'realms' for recent Keycloak versions 
+#----------------------------------------
+#keycloak.oauth.realm.path=auth/realms
+#keycloak.oauth.realm.path=realms
+
 #-----------------------------------------------------------------
 # Authorized redirect URL: must end with /user?sp-oauth=keycloak
 #-----------------------------------------------------------------
 keycloak.oauth.callback-url=https://savapage.example.com/user?sp-oauth=keycloak
-
 
 # end-of-file

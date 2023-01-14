@@ -103,6 +103,16 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     /**
      * .
      */
+    private static final String PROP_KEY_OAUTH_REALM_PATH =
+            PROP_KEY_OAUTH_REALM + ".path";
+
+    /**
+     * .
+     */
+    private static final String OAUTH_REALM_PATH_DEFAULT = "auth/realms";
+    /**
+     * .
+     */
     private static final String PROP_KEY_OAUTH_CALLBACK_URL =
             PROP_KEY_OAUTH_PFX + "callback-url";
 
@@ -117,10 +127,10 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     /**
      * {@link String#format(String, Object...)} for Protected Resource URL.
      * Placeholders from left to right: {@link #PROP_KEY_OAUTH_BASE_URL},
-     * {@link #PROP_KEY_OAUTH_REALM}.
+     * {@link PROP_KEY_OAUTH_REALM_PATH}, {@link #PROP_KEY_OAUTH_REALM}.
      */
     private static final String PROTECTED_RESOURCE_URL_FORMAT =
-            "%s/auth/realms/%s/protocol/openid-connect/userinfo";
+            "%s/%s/%s/protocol/openid-connect/userinfo";
 
     /**
      * The unique ID.
@@ -194,6 +204,9 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
                     PROP_KEY_OAUTH_BASE_URL));
         }
 
+        final String oauthRealmPath = props.getProperty(
+                PROP_KEY_OAUTH_REALM_PATH, OAUTH_REALM_PATH_DEFAULT);
+
         this.id = pluginId;
         this.name = pluginName;
 
@@ -233,7 +246,7 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
 
             this.protectedResourceUrl =
                     new URL(String.format(PROTECTED_RESOURCE_URL_FORMAT,
-                            oauthBasePropValue,
+                            oauthBasePropValue, oauthRealmPath,
                             props.getProperty(PROP_KEY_OAUTH_REALM)));
 
         } catch (MalformedURLException e) {
