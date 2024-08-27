@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.savapage</groupId>
     <artifactId>savapage-ext-oauth</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <name>SavaPage OAuth Client Library.</name>
     <description>SavaPage is a Free Software Solution that uses Open Standards and Commodity Hardware for Secure Pull-Printing, Pay-Per-Print, Delegated Print, Job Ticketing, Auditing and PDF Creation.</description>
     <properties>
@@ -77,12 +77,12 @@
         <dependency>
             <groupId>org.savapage</groupId>
             <artifactId>savapage-core</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.0</version>
         </dependency>
         <dependency>
             <groupId>org.savapage</groupId>
             <artifactId>savapage-ext</artifactId>
-            <version>1.5.0</version>
+            <version>1.6.0</version>
         </dependency>
     </dependencies>
     <url>https://www.savapage.org</url>
