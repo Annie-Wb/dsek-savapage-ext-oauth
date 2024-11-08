@@ -36,7 +36,6 @@ import org.savapage.ext.ServerPluginException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.scribejava.apis.KeycloakApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -106,10 +105,6 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     private static final String PROP_KEY_OAUTH_REALM_PATH =
             PROP_KEY_OAUTH_REALM + ".path";
 
-    /**
-     * .
-     */
-    private static final String OAUTH_REALM_PATH_DEFAULT = "auth/realms";
     /**
      * .
      */
@@ -204,8 +199,19 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
                     PROP_KEY_OAUTH_BASE_URL));
         }
 
-        final String oauthRealmPath = props.getProperty(
-                PROP_KEY_OAUTH_REALM_PATH, OAUTH_REALM_PATH_DEFAULT);
+        final String oauthRealmPath =
+                props.getProperty(PROP_KEY_OAUTH_REALM_PATH,
+                        KeycloakApiExt.RealmPath.REALMS.getPath());
+
+        final KeycloakApiExt.RealmPath oauthRealmPathEnum =
+                KeycloakApiExt.RealmPath.lookup(oauthRealmPath);
+
+        if (oauthRealmPathEnum == null) {
+            throw new ServerPluginException(
+                    String.format("[%s] [%s] is invalid. Valid values are: %s",
+                            PROP_KEY_OAUTH_REALM_PATH, oauthRealmPath,
+                            KeycloakApiExt.RealmPath.validSubPaths()));
+        }
 
         this.id = pluginId;
         this.name = pluginName;
@@ -229,14 +235,19 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
                                 PROP_KEY_OAUTH_BASE_URL, oauthBasePropValue));
             }
 
-            this.oauthService = new ServiceBuilder(
-                    props.getProperty(PROP_KEY_OAUTH_CLIENT_ID)).apiSecret(
-                            props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET))
-                            .defaultScope(OAUTH_SCOPE) //
-                            .callback(props
-                                    .getProperty(PROP_KEY_OAUTH_CALLBACK_URL))
-                            .build(KeycloakApi.instance(oauthBasePropValue,
-                                    props.getProperty(PROP_KEY_OAUTH_REALM)));
+            final ServiceBuilder svcBuilder = new ServiceBuilder(
+                    props.getProperty(PROP_KEY_OAUTH_CLIENT_ID));
+
+            svcBuilder
+                    .apiSecret(props.getProperty(PROP_KEY_OAUTH_CLIENT_SECRET));
+            svcBuilder.defaultScope(OAUTH_SCOPE);
+            svcBuilder.callback(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL));
+
+            final KeycloakApiExt api = KeycloakApiExt.instance(
+                    oauthBasePropValue, oauthRealmPathEnum,
+                    props.getProperty(PROP_KEY_OAUTH_REALM));
+
+            this.oauthService = svcBuilder.build(api);
 
             this.callbackUrl =
                     new URL(props.getProperty(PROP_KEY_OAUTH_CALLBACK_URL));

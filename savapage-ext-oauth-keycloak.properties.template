@@ -1,9 +1,9 @@
 #
 # This file is part of the SavaPage project <https://www.savapage.org>.
-# Copyright (c) 2020 Datraverse B.V.
+# Copyright (c) 2024 Datraverse B.V.
 # Author: Rijk Ravestein.
 #
-# SPDX-FileCopyrightText: © 2020 Datraverse B.V. <info@datraverse.com>
+# SPDX-FileCopyrightText: © 2024 Datraverse B.V. <info@datraverse.com>
 # SPDX-License-Identifier: AGPL-3.0-or-later
 #
 # This program is free software: you can redistribute it and/or modify
@@ -100,12 +100,12 @@ keycloak.oauth.client-secret=your_client_secret
 keycloak.oauth.base-url=your_base_url
 keycloak.oauth.realm=your_realm
 
-#----------------------------------------
-# realm path: 'auth/realms' (default) or 
-# 'realms' for recent Keycloak versions 
-#----------------------------------------
-#keycloak.oauth.realm.path=auth/realms
+#-------------------------------------------
+# realm path: 'realms' (default) or 
+# 'auth/realms' for older Keycloak versions 
+#-------------------------------------------
 #keycloak.oauth.realm.path=realms
+#keycloak.oauth.realm.path=auth/realms
 
 #-----------------------------------------------------------------
 # Authorized redirect URL: must end with /user?sp-oauth=keycloak
