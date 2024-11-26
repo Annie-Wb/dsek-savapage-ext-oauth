@@ -92,6 +92,16 @@ savapage.plugin.live=true
 #-------------------------------------------------------------------
 #keycloak.plugin.icon=my_keycloak.png
 
+#-----------------------------------------------------------
+# Show icon in login button? true (default) | false
+#-----------------------------------------------------------
+#keycloak.login.btn.icon=false
+
+#-----------------------------------------------------------
+# Add text to login button (default: no text added)
+#-----------------------------------------------------------
+#keycloak.login.btn.text=Button text
+
 #-----------------------------------------------------------------
 # OAuth 2.0 client id and secret, baseURL and realm.
 #-----------------------------------------------------------------

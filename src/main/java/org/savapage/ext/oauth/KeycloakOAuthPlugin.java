@@ -63,6 +63,18 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     private static final String PROP_KEY_PFX = "keycloak.";
 
     /** */
+    private static final String PROP_KEY_LOGIN_BTN =
+            PROP_KEY_PFX + "login.btn.";
+
+    /** */
+    private static final String PROP_KEY_LOGIN_BTN_ICON =
+            PROP_KEY_LOGIN_BTN + "icon";
+
+    /** */
+    private static final String PROP_KEY_LOGIN_BTN_TXT =
+            PROP_KEY_LOGIN_BTN + "text";
+
+    /** */
     private static final String PROP_KEY_PLUGIN_ICON =
             PROP_KEY_PFX + "plugin.icon";
 
@@ -143,6 +155,16 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     private String customIconPath;
 
     /**
+     * If {@code true}, button must be shown in login button.
+     */
+    private boolean showButtonIconAtLogin;
+
+    /**
+     * Text to be added to login button.
+     */
+    private String textButtonIconAtLogin;
+
+    /**
      * If {@code true}, the OAuth provided User ID is part of SavaPage external
      * user source.
      */
@@ -218,6 +240,10 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
 
         this.customIconPath = props.getProperty(PROP_KEY_PLUGIN_ICON);
 
+        this.textButtonIconAtLogin = props.getProperty(PROP_KEY_LOGIN_BTN_TXT);
+        this.showButtonIconAtLogin = Boolean.parseBoolean(props
+                .getProperty(PROP_KEY_LOGIN_BTN_ICON, Boolean.toString(true)));
+
         this.userSource = Boolean.parseBoolean(props.getProperty(
                 PROP_KEY_PLUGIN_USER_SOURCE, Boolean.toString(false)));
 
@@ -278,6 +304,16 @@ public final class KeycloakOAuthPlugin implements OAuthClientPlugin {
     @Override
     public String getCustomIconPath() {
         return this.customIconPath;
+    }
+
+    @Override
+    public boolean showLoginButtonIcon() {
+        return this.showButtonIconAtLogin;
+    }
+
+    @Override
+    public String getLoginButtonText() {
+        return this.textButtonIconAtLogin;
     }
 
     @Override

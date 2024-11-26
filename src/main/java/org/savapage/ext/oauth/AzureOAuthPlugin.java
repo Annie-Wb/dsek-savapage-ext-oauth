@@ -178,6 +178,16 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
     }
 
     @Override
+    public boolean showLoginButtonIcon() {
+        return true;
+    }
+
+    @Override
+    public String getLoginButtonText() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return this.name;
     }

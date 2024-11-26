@@ -157,6 +157,16 @@ public final class SmartschoolOAuthPlugin implements OAuthClientPlugin {
     }
 
     @Override
+    public boolean showLoginButtonIcon() {
+        return true;
+    }
+
+    @Override
+    public String getLoginButtonText() {
+        return null;
+    }
+
+    @Override
     public String getId() {
         return this.id;
     }
