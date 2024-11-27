@@ -169,7 +169,7 @@ public final class AzureOAuthPlugin implements OAuthClientPlugin {
 
     @Override
     public String getInstanceId() {
-        return null;
+        return ID_ONE_OAUTH_PROVIDER;
     }
 
     @Override
