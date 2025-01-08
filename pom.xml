@@ -11,6 +11,7 @@
     <name>SavaPage OAuth Client Library.</name>
     <description>SavaPage is a Free Software Solution that uses Open Standards and Commodity Hardware for Secure Pull-Printing, Pay-Per-Print, Delegated Print, Job Ticketing, Auditing and PDF Creation.</description>
     <properties>
+        <org.junit.jupiter.version>5.5.2</org.junit.jupiter.version>
         <LICENSE_NAME>GNU Affero General Public License (AGPL)</LICENSE_NAME>
         <LICENSE_URL>https://www.gnu.org/licenses/agpl-3.0.txt</LICENSE_URL>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,9 +70,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${org.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
