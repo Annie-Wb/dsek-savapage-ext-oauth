@@ -1,0 +1,91 @@
+
+#=======================================================================
+#                  SavaPage OAuth Client Plug-in
+# 
+#                             OpenID Connect 
+# 
+#=======================================================================
+#
+#           THIS FILE CONTAINS CONFIDENTIAL INFORMATION AND
+#              SHOULD ONLY BE ACCESSIBLE BY ADMINISTRATORS
+#
+#            DO NOT CHANGE THE PERMISSIONS SET ON THIS FILE
+#
+#=======================================================================
+
+#-----------------------------------------------------------------
+# Unique ID of this plug-in.
+#-----------------------------------------------------------------
+savapage.plugin.id=openid-oauth
+
+#-----------------------------------------------------------------
+# Descriptive name
+#-----------------------------------------------------------------
+savapage.plugin.name=OpenID OAuth
+
+#-----------------------------------------------------------------
+# Plug-in class
+#-----------------------------------------------------------------
+savapage.plugin.class=org.savapage.ext.oauth.OpenIDOAuthPlugin
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+#savapage.plugin.enable=false
+savapage.plugin.enable=true
+
+#-----------------------------------------------------------------
+# Is plug-in turned online when loaded? (true | false) 
+#
+# When the plug-in is turned offline, users are not able to   
+# authenticate, but Web API callbacks are handled. 
+#-----------------------------------------------------------------
+savapage.plugin.online=true
+
+#-----------------------------------------------------------------
+# true | false
+#-----------------------------------------------------------------
+savapage.plugin.live=true
+
+#-------------------------------------------------------------------
+# true | false (default)
+#
+# If "true", the OAuth provided User ID is part of SavaPage 
+# external user source (OpenLDAP).
+#
+# This value is used to decide if an enabled "On demand user creation"
+# "At first login" must be applied. If so, if a user is not present in 
+# SavaPage after a successful OAuth login, the user is ad hoc created
+# in anticipation of the next user sync.
+#-------------------------------------------------------------------
+#openid.savapage.usersource=true
+
+#-------------------------------------------------------------------
+# Optional custom icon path relative to "server/custom/web/" 
+# without leading '/'.
+#-------------------------------------------------------------------
+#openid.plugin.icon=my_openid.png
+
+#-----------------------------------------------------------
+# Show icon in login button? true (default) | false
+#-----------------------------------------------------------
+#openid.login.btn.icon=false
+
+#-----------------------------------------------------------
+# Add text to login button (default: no text added)
+#-----------------------------------------------------------
+#openid.login.btn.text=Button text
+
+#-----------------------------------------------------------------
+# OAuth 2.0 client id and secret, baseURL and realm.
+#-----------------------------------------------------------------
+openid.oauth.client-id=cid-here
+openid.oauth.client-secret=secret-here
+openid.oauth.authorization-url=https://auth.dsek.se/application/o/authorize/
+openid.oauth.token-url=https://auth.dsek.se/application/o/token/
+openid.oauth.userinfo-url=https://auth.dsek.se/application/o/userinfo/
+
+#-----------------------------------------------------------------
+# Authorized redirect URL: must end with /user?sp-oauth=keycloak
+#-----------------------------------------------------------------
+openid.oauth.callback-url=https://print.dsek.se/user?sp-oauth=keycloak
