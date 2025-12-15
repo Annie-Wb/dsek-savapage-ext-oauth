@@ -1,17 +1,6 @@
-<!-- 
-    SPDX-FileCopyrightText: (c) 2020 Datraverse BV <info@datraverse.com> 
-    SPDX-License-Identifier: AGPL-3.0-or-later 
--->
+# D-sek savapage-ext-oauth
 
-# savapage-ext-oauth
-
-OAuth Client Plug-in for:
-
-* [Keycloak](https://www.keycloak.org/)
-* [Google](https://www.google.com/)
-* [Microsoft Azure](https://login.microsoftonline.com/)
-* [Smartschool](https://www.smartschool.be)
-
+## OAuth Client Plug-in for Authentik (auth.dsek.se)
 
 ### License
 
@@ -20,36 +9,20 @@ copyright (c) 2020 Datraverse B.V. and licensed under the
 [GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl.html)
 version 3, or (at your option) any later version.
 
-[<img src="./img/reuse-horizontal.png" title="REUSE Compliant" alt="REUSE Software" height="25"/>](https://reuse.software/)
-
-### Join Efforts, Join our Community
-
-SavaPage Software is produced by Community Partners and consumed by Community Members. If you want to modify and/or distribute our source code, please join us as Development Partner. By joining the [SavaPage Community](https://wiki.savapage.org) you can help build a truly Libre Print Management Solution. Please contact [info@savapage.org](mailto:info@savapage.org).
-
-### Issue Management
-
-[https://issues.savapage.org](https://issues.savapage.org)
-
 ### Usage
+1. Install using `make package`
 
-Copy plug-in library to server environment:
+2. Copy plug-in library to server environment:
 
-    $ sudo target/savapage-ext-oauth.jar /opt/savapage/server/ext/lib
+    `sudo target/savapage-ext-oauth.jar /opt/savapage/server/ext/lib`
     
-Copy plug-in property file(s) to the server environment. Annotated `.template` files are present in the root directory of this repository.
+3. Copy plug-in property file and fill in with required ID
+  
+    `sudo cp savapage-ext-oauth-openid.properties /opt/savapage/server/ext`
+
+4. Set ownership and restrict permissions, since properties file contains confidential information:
     
-    $ sudo cp savapage-ext-oauth-keycloak.properties /opt/savapage/server/ext
-    $ sudo cp savapage-ext-oauth-google.properties /opt/savapage/server/ext
-    $ sudo cp savapage-ext-oauth-azure.properties /opt/savapage/server/ext
-    $ sudo cp savapage-ext-oauth-smartschool.properties /opt/savapage/server/ext
-
-Multiple Smartschool instances are permitted. See the annotated configuration keys in the `savapage-ext-oauth-smartschool.properties.template` file.
-
-Set ownership and restrict permissions, since properties file contains confidential information:
-    
-    $ sudo chown savapage:savapage /opt/savapage/server/ext/savapage-ext-oauth-*.properties
-    $ sudo chmod 600 /opt/savapage/server/ext/savapage-ext-oauth-*.properties
-
-Edit `savapage-ext-oauth-*.properties` files to specify the necessary data.
+    `sudo chown savapage:savapage /opt/savapage/server/ext/savapage-ext-oauth-*.properties`
+    `sudo chmod 600 /opt/savapage/server/ext/savapage-ext-oauth-*.properties`
        
-Restart SavaPage.
+5. Restart SavaPage with `systemctl restart savapage` 
